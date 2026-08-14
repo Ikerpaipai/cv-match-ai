@@ -58,3 +58,7 @@ The result is a ranked list of job opportunities based on their compatibility wi
 - **Backend:** NestJS, TypeScript, Prisma
 - **Database:** PostgreSQL
 - **AI:** Google Gemini, embeddings, vector search
+
+## Setup
+
+See the [Setup Guide](docs/SETUP.md) for installation and configuration instructions.
