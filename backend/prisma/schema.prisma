@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Candidate {
+  id              String   @id @default(uuid())
+  name            String
+  title           String
+  skills          String[]
+  experienceYears Int
+
+  embedding       Json?
+  embeddingVector Unsupported("vector(3072)")? @map("embedding_vector")
+
+  createdAt       DateTime @default(now())
+}
+
+model JobOffer {
+  id         String @id @default(uuid())
+  externalId String
+  source     String
+
+  title       String
+  company     String
+  location    String
+  description String
+
+  skills JobSkill[]
+
+  experienceYears Int    @default(0)
+  url             String
+  aiAnalyzed      Boolean  @default(false)
+
+  embedding       Json?
+  embeddingVector Unsupported("vector(3072)")? @map("embedding_vector")
+
+  createdAt DateTime @default(now())
+
+  @@unique([source, externalId])
+}
+
+model JobSkill {
+  id String @id @default(uuid())
+
+  name     String
+  required Boolean
+
+  jobId String
+  job   JobOffer @relation(fields: [jobId], references: [id], onDelete: Cascade)
+}
